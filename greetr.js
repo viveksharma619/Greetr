@@ -23,8 +23,45 @@
     }
     
     Greetr.prototype = {
-        fullname : function(){
+        fullname: function(){
             return this.firstName + ' ' + this.lastName;
+        },
+        validate: function(){
+            if(supportedLanguages.indexOf(this.language) === -1){
+                throw 'Language not supported';
+            }
+        },
+        greeting: function(){
+            return greetings[this.language] + ' ' + this.firstName + ' ' + this.lastName;
+        },
+        formalGreeting: function(){
+            return formalGreetings[this.language] + ' ' + this.fullname();
+        },
+        greet: function(formal){
+            var msg;
+            if(formal){
+                msg = this.formalGreeting();
+            }
+            else{
+                msg = this.greeting();
+            }
+            if(console){
+                console.log(msg);
+            }
+            //makes method chainable
+            return this;
+        },
+        log: function(){
+            if(console){
+                console.log(logMessages[this.language]+ ':' + this.fullname());
+            }
+            //makes method chainable
+            return this;
+        },
+        setLang: function(lang){
+            this.language = lang;
+            this.validate();
+            return this;
         }
     };
 
